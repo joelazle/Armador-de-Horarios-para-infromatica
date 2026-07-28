@@ -3,374 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Armá tu horario — Informática UNAHUR 2026 2C</title>
+<title>Armá tu horario — Informática UNAHUR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --paper:#EEF1F6;
-  --paper-line:#C6D2E1;
-  --paper-line-strong:#AFC0D6;
-  --ink:#1F2A44;
-  --ink-soft:#4C5972;
-  --ink-faint:#8592A8;
-  --card:#FFFFFF;
-  --accent-pin:#D6577B;
-  --danger:#C0392B;
-  --danger-bg:#FDEAE8;
-  --ok:#2F9E96;
-  --shadow: 0 2px 6px rgba(31,42,68,0.10), 0 1px 2px rgba(31,42,68,0.08);
-  font-size:16px;
-}
-* { box-sizing:border-box; }
-html,body{margin:0;padding:0;}
-body{
-  background:
-    linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/ 100% 32px,
-    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px) 0 0/ 32px 100%,
-    var(--paper);
-  color:var(--ink);
-  font-family:'IBM Plex Sans', sans-serif;
-  min-height:100vh;
-}
-h1,h2,h3, .hand{ font-family:'Kalam', cursive; }
-.mono{ font-family:'IBM Plex Mono', monospace; }
-
-/* ===== Layout ===== */
-.wrap{
-  max-width:1400px;
-  margin:0 auto;
-  padding:28px 20px 80px;
-}
-header.top{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:24px;
-  margin-bottom:22px;
-  flex-wrap:wrap;
-}
-header.top h1{
-  font-size:2.6rem;
-  font-weight:700;
-  margin:0;
-  color:var(--ink);
-  line-height:1;
-  transform:rotate(-1deg);
-  display:inline-block;
-}
-header.top h1 span.underline{
-  position:relative;
-  display:inline-block;
-}
-header.top h1 span.underline::after{
-  content:"";
-  position:absolute;
-  left:-2px; right:-4px; bottom:-2px;
-  height:10px;
-  background:var(--accent-pin);
-  opacity:0.35;
-  z-index:-1;
-  transform:rotate(-1deg);
-}
-.subtitle{
-  color:var(--ink-soft);
-  font-size:0.95rem;
-  margin-top:6px;
-  max-width:520px;
-}
-.top-actions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-button.chip-btn{
-  font-family:'IBM Plex Sans', sans-serif;
-  font-size:0.82rem;
-  font-weight:600;
-  background:var(--card);
-  border:1.5px solid var(--paper-line-strong);
-  color:var(--ink);
-  padding:8px 14px;
-  border-radius:20px;
-  cursor:pointer;
-  box-shadow:var(--shadow);
-  transition:transform .1s ease, background .15s ease;
-}
-button.chip-btn:hover{ background:#F5F7FA; transform:translateY(-1px); }
-button.chip-btn.primary{ background:var(--ink); color:#fff; border-color:var(--ink); }
-button.chip-btn.primary:hover{ background:#30405f; }
-
-.layout{
-  display:grid;
-  grid-template-columns: 380px 1fr;
-  gap:22px;
-  align-items:start;
-}
-@media (max-width: 980px){
-  .layout{ grid-template-columns: 1fr; }
-}
-
-/* ===== Sidebar ===== */
-.sidebar{
-  background:var(--card);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  padding:18px 16px 20px;
-  position:sticky;
-  top:16px;
-}
-@media (max-width:980px){ .sidebar{ position:static; } }
-
-.search-box{ position:relative; margin-bottom:14px; }
-.search-box input{
-  width:100%;
-  font-family:'IBM Plex Mono', monospace;
-  font-size:0.92rem;
-  padding:10px 12px 10px 34px;
-  border:1.5px solid var(--paper-line-strong);
-  border-radius:8px;
-  background:#FBFCFD;
-  color:var(--ink);
-}
-.search-box input:focus{ outline:2px solid var(--ok); outline-offset:1px; }
-.search-box::before{
-  content:"🔍";
-  position:absolute; left:10px; top:9px;
-  font-size:0.9rem; opacity:0.6;
-}
-
-.filter-group{ margin-bottom:12px; }
-.filter-group .label{
-  font-size:0.72rem;
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  color:var(--ink-faint);
-  font-weight:600;
-  margin-bottom:6px;
-}
-.chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
-.tag-chip{
-  font-family:'IBM Plex Sans';
-  font-size:0.78rem;
-  font-weight:600;
-  padding:5px 11px;
-  border-radius:14px;
-  border:1.5px solid var(--paper-line-strong);
-  background:#FBFCFD;
-  color:var(--ink-soft);
-  cursor:pointer;
-  user-select:none;
-}
-.tag-chip.active{
-  background:var(--ink);
-  color:#fff;
-  border-color:var(--ink);
-}
-
-.materia-list{
-  max-height:56vh;
-  overflow-y:auto;
-  margin-top:14px;
-  padding-right:4px;
-}
-.materia-list::-webkit-scrollbar{ width:8px; }
-.materia-list::-webkit-scrollbar-thumb{ background:var(--paper-line-strong); border-radius:4px; }
-
-.materia-card{
-  border:1.5px dashed var(--paper-line-strong);
-  border-radius:10px;
-  padding:10px 12px;
-  margin-bottom:8px;
-  background:#FDFDFC;
-}
-.materia-card .m-head{
-  display:flex; justify-content:space-between; align-items:baseline;
-  cursor:pointer;
-  gap:8px;
-}
-.materia-card .m-title{ font-weight:600; font-size:0.92rem; }
-.materia-card .m-code{ font-size:0.7rem; color:var(--ink-faint); font-family:'IBM Plex Mono'; }
-.materia-card .m-carreras{ font-size:0.68rem; color:var(--ink-faint); margin-top:2px; }
-.materia-card .m-caret{ font-size:0.7rem; color:var(--ink-faint); transition:transform .15s ease; }
-.materia-card.open .m-caret{ transform:rotate(90deg); }
-
-.com-list{ margin-top:8px; display:none; flex-direction:column; gap:6px; }
-.materia-card.open .com-list{ display:flex; }
-.com-item{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:8px;
-  font-size:0.78rem;
-  padding:7px 9px;
-  border-radius:7px;
-  background:#F3F5F8;
-  cursor:pointer;
-  border:1.5px solid transparent;
-}
-.com-item:hover{ border-color:var(--paper-line-strong); }
-.com-item.selected{
-  background:var(--sel-color, #ffe9c8);
-  border-color:var(--sel-color-strong, #c98f2a);
-  font-weight:600;
-}
-.com-item .com-when{ color:var(--ink-soft); font-family:'IBM Plex Mono'; font-size:0.72rem; }
-.com-item .com-badges{ display:flex; gap:4px; flex-shrink:0; }
-.badge{
-  font-size:0.62rem; padding:2px 6px; border-radius:8px; font-weight:600; white-space:nowrap;
-}
-.badge.Presencial{ background:#E4F1E1; color:#3B7A3F; }
-.badge.Virtual{ background:#E3EEF9; color:#2C6FA6; }
-.badge.Combinada{ background:#F3E7F7; color:#8B4CA0; }
-.no-results{ text-align:center; color:var(--ink-faint); font-size:0.85rem; padding:20px 8px; }
-
-/* ===== Main / calendar ===== */
-.main-col{ display:flex; flex-direction:column; gap:18px; }
-
-.summary-bar{
-  display:flex; flex-wrap:wrap; gap:12px; align-items:center;
-  background:var(--card); border-radius:14px; box-shadow:var(--shadow);
-  padding:14px 18px;
-}
-.stat{
-  display:flex; flex-direction:column; gap:2px; padding-right:18px; border-right:1.5px dashed var(--paper-line-strong);
-}
-.stat:last-of-type{ border-right:none; }
-.stat .num{ font-family:'Kalam'; font-weight:700; font-size:1.5rem; line-height:1; }
-.stat .lbl{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-faint); }
-
-.conflict-note{
-  background:var(--danger-bg);
-  border:1.5px solid #F0C2BC;
-  color:var(--danger);
-  border-radius:10px;
-  padding:10px 14px;
-  font-size:0.85rem;
-  display:flex; align-items:flex-start; gap:8px;
-  transform:rotate(-0.4deg);
-}
-.conflict-note b{ font-weight:700; }
-
-.calendar-wrap{
-  background:var(--card);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  padding:18px;
-  overflow-x:auto;
-}
-.cal-grid{
-  display:grid;
-  grid-template-columns: 56px repeat(6, minmax(120px, 1fr));
-  min-width:760px;
-  position:relative;
-}
-.cal-head{
-  font-family:'Kalam';
-  font-weight:700;
-  font-size:0.95rem;
-  text-align:center;
-  padding:6px 4px 10px;
-  border-bottom:2px solid var(--ink);
-  color:var(--ink);
-}
-.cal-head.corner{ border-bottom:2px solid transparent; }
-.hour-label{
-  font-family:'IBM Plex Mono';
-  font-size:0.68rem;
-  color:var(--ink-faint);
-  text-align:right;
-  padding-right:8px;
-  transform:translateY(-7px);
-}
-.day-col{
-  position:relative;
-  border-left:1px solid var(--paper-line);
-}
-.hour-row-bg{
-  height:52px;
-  border-bottom:1px dotted var(--paper-line);
-}
-.block{
-  position:absolute;
-  left:3px; right:3px;
-  border-radius:6px 10px 8px 9px;
-  padding:6px 8px 5px;
-  font-size:0.72rem;
-  line-height:1.25;
-  box-shadow:0 1px 3px rgba(31,42,68,0.18);
-  overflow:hidden;
-  cursor:default;
-  border:1.5px solid rgba(0,0,0,0.08);
-}
-.block .b-title{ font-weight:700; display:block; }
-.block .b-meta{ opacity:0.85; font-family:'IBM Plex Mono'; font-size:0.66rem; }
-.block .b-remove{
-  position:absolute; top:2px; right:4px;
-  font-size:0.7rem; cursor:pointer; opacity:0.5; font-weight:700;
-}
-.block .b-remove:hover{ opacity:1; }
-.block.conflict{
-  outline:2.5px dashed var(--danger);
-  outline-offset:1px;
-}
-.block.conflict::after{
-  content:"⚠";
-  position:absolute; bottom:2px; right:5px; font-size:0.8rem;
-}
-
-.empty-cal{
-  text-align:center;
-  padding:50px 10px;
-  color:var(--ink-faint);
-  font-size:0.95rem;
-}
-.empty-cal .hand{ font-size:1.3rem; color:var(--ink-soft); display:block; margin-bottom:6px; }
-
-.legend{
-  background:var(--card); border-radius:14px; box-shadow:var(--shadow);
-  padding:16px 18px;
-}
-.legend h3{ margin:0 0 10px; font-size:1.15rem; }
-.legend-list{ display:flex; flex-direction:column; gap:8px; }
-.legend-item{
-  display:flex; align-items:center; gap:10px;
-  font-size:0.85rem;
-  padding:6px 8px;
-  border-radius:8px;
-}
-.legend-swatch{ width:14px; height:14px; border-radius:4px; flex-shrink:0; border:1.5px solid rgba(0,0,0,0.15); }
-.legend-item .li-main{ flex:1; }
-.legend-item .li-when{ font-family:'IBM Plex Mono'; font-size:0.7rem; color:var(--ink-faint); }
-.legend-item button{
-  background:none; border:none; cursor:pointer; color:var(--ink-faint); font-size:0.95rem;
-}
-.legend-item button:hover{ color:var(--danger); }
-.legend-empty{ color:var(--ink-faint); font-size:0.85rem; font-style:italic; }
-
-footer.tip{
-  margin-top:10px;
-  font-size:0.78rem;
-  color:var(--ink-faint);
-  text-align:center;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrap">
 
   <header class="top">
     <div>
-      <h1><span class="underline">Armá tu horario</span> 🗓️</h1>
-      <div class="subtitle">Materias de Informática, IA, Videojuegos y Ciberseguridad — UNAHUR, 2026 2C. Elegí comisiones y mirá cómo te queda la semana antes de inscribirte.</div>
+      <h1><span class="dot"></span>Armá tu horario</h1>
+      <div class="subtitle">Elegí comisiones y mirá cómo te queda la semana antes de inscribirte. Podés usar los horarios de Informática UNAHUR, subir tu propio Excel, o cargar materias a mano.</div>
     </div>
     <div class="top-actions">
-      <button class="chip-btn" id="btnClear">🗑️ Vaciar</button>
-      <button class="chip-btn primary" id="btnShare">🔗 Copiar link de mi horario</button>
+      <button class="btn" id="btnClear">Vaciar selección</button>
+      <button class="btn primary" id="btnShare">Copiar link de mi horario</button>
     </div>
   </header>
 
   <div class="layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">
+
+      <div class="sources-panel">
+        <div class="sources-title">Fuentes de datos</div>
+
+        <div class="source-row">
+          <div>
+            <div class="source-label">Horarios UNAHUR</div>
+            <div class="source-sub">Informática · IA · Videojuegos · Ciberseguridad, 2026 2C</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleBuiltin" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="source-row" style="border-top:1px solid var(--border); margin-top:8px; padding-top:10px; align-items:flex-start;">
+          <div style="width:100%;">
+            <div class="source-label">Tus materias</div>
+            <div class="source-sub">Subí un Excel propio o cargalas a mano</div>
+            <div class="own-actions">
+              <button class="btn btn-sm" id="btnUpload">Subir .xlsx</button>
+              <button class="btn btn-sm" id="btnManual">+ Agregar materia</button>
+              <input type="file" id="fileInput" accept=".xlsx,.xls">
+            </div>
+            <div id="uploadMsg"></div>
+            <div class="own-list" id="ownList"></div>
+          </div>
+        </div>
+
+        <div class="manual-form" id="manualForm">
+          <div>
+            <label>Materia</label>
+            <input type="text" id="mfMateria" placeholder="Ej: Redes de datos">
+          </div>
+          <div class="field-row">
+            <div>
+              <label>Comisión</label>
+              <input type="text" id="mfComision" placeholder="1" value="1">
+            </div>
+            <div>
+              <label>Modalidad</label>
+              <select id="mfModalidad">
+                <option>Presencial</option>
+                <option>Virtual</option>
+                <option>Combinada</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label>Turno</label>
+            <select id="mfTurno">
+              <option>Mañana</option>
+              <option>Tarde</option>
+              <option>Noche</option>
+            </select>
+          </div>
+          <div>
+            <label>Horarios</label>
+            <div id="mfBlocks"></div>
+            <button class="btn btn-sm" id="mfAddBlock" style="margin-top:4px;">+ Agregar día/horario</button>
+          </div>
+          <div class="form-actions">
+            <button class="btn subtle btn-sm" id="mfCancel">Cancelar</button>
+            <button class="btn primary btn-sm" id="mfSave">Guardar materia</button>
+          </div>
+        </div>
+      </div>
+
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Buscar materia o código...">
       </div>
@@ -404,7 +126,7 @@ footer.tip{
       <div class="calendar-wrap">
         <div class="cal-grid" id="calGrid"></div>
         <div class="empty-cal" id="emptyMsg" style="display:none;">
-          <span class="hand">Tu semana está en blanco todavía ✏️</span>
+          <span class="hl">Tu semana está vacía todavía</span>
           Elegí materias de la izquierda para empezar a armar el horario.
         </div>
       </div>
@@ -414,431 +136,12 @@ footer.tip{
         <div class="legend-list" id="legendList"></div>
       </div>
 
-      <footer class="tip">Tip: el link de "Copiar link de mi horario" guarda tu selección — guardalo en favoritos o mandátelo a vos mismo para volver a verlo.</footer>
+      <footer class="tip">"Copiar link de mi horario" guarda tu selección (incluidas las materias propias que hayas elegido) en la URL — guardala en favoritos para volver a verla.</footer>
     </div>
   </div>
 </div>
 
-<script id="materias-data" type="application/json">[{"id":0,"carreras":["Info","IA"],"codigo":"1401","materia":"Álgebra lineal","comision":"1","raw_horario":"Miercoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":1,"carreras":["Info","IA"],"codigo":"1401","materia":"Álgebra lineal","comision":"2","raw_horario":"Miercoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":2,"carreras":["Info","IA"],"codigo":"1401","materia":"Álgebra lineal","comision":"3","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":3,"carreras":["Info"],"codigo":"768","materia":"Algoritmos","comision":"1","raw_horario":"Miercoles 18 a 22","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":4,"carreras":["Info"],"codigo":"769","materia":"Análisis Matemático","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":5,"carreras":["IA","Info"],"codigo":"1407","materia":"Aprendizaje automático","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":6,"carreras":["IA"],"codigo":"1409","materia":"Aprendizaje automático avanzado","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":7,"carreras":["Info"],"codigo":"782","materia":"Arquitectura de Computadoras","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":8,"carreras":["Info"],"codigo":"778","materia":"Arquitectura de Software I","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":9,"carreras":["VJ"],"codigo":"742","materia":"Arte Digital para Videojuegos","comision":"1","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":10,"carreras":["VJ"],"codigo":"742","materia":"Arte Digital para Videojuegos","comision":"2","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":11,"carreras":["Todas"],"codigo":"754","materia":"Bases de Datos","comision":"3","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":12,"carreras":["Todas"],"codigo":"754","materia":"Bases de Datos","comision":"4","raw_horario":"Sábado 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Sábado","start":8,"end":12}]},{"id":13,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"5","raw_horario":"Miércoles 14 a 18hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":14,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"7","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":15,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"8","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":16,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"9","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":17,"carreras":["Todas"],"codigo":"754","materia":"Bases de Datos","comision":"1","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":18,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"2","raw_horario":"Miércoles 8 a 12hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":19,"carreras":["Todas"],"codigo":"754","materia":"Bases de datos","comision":"6","raw_horario":"Miércoles 14 a 18hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":20,"carreras":["IA"],"codigo":"1402","materia":"Cálculo","comision":"1","raw_horario":"Jueves (18:00 a 22:00) - Viernes (18:00 a 20:00)","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22},{"day":"Viernes","start":18,"end":20}]},{"id":21,"carreras":["IA"],"codigo":"1402","materia":"Cálculo","comision":"2","raw_horario":"Jueves 18 a 22hs (P) - Lunes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22},{"day":"Lunes","start":18,"end":20}]},{"id":22,"carreras":["IA"],"codigo":"1402","materia":"Cálculo","comision":"3","raw_horario":"Lunes 9 a 12hs - Martes 9 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Lunes","start":9,"end":12},{"day":"Martes","start":9,"end":12}]},{"id":23,"carreras":["Ciber"],"codigo":"TI_158","materia":"Cibercrimen y análisis forense","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":24,"carreras":["VJ"],"codigo":"709","materia":"Ciencias Aplicadas Al Diseño","comision":"1","raw_horario":"martes de 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":25,"carreras":["Info"],"codigo":"INF_COMP13","materia":"COMP_Fundamentos de Aprendizaje Automático","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":26,"carreras":["Info"],"codigo":"INF_COMP10","materia":"COMP_Seminarios","comision":"1","raw_horario":"Martes de 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":27,"carreras":["Info"],"codigo":"INF_COMP10","materia":"COMP_Seminarios","comision":"1","raw_horario":"Martes 16 a 18hs (V) -  Miércoles 16 a 18hs (P)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Martes","start":16,"end":18},{"day":"Miércoles","start":16,"end":18}]},{"id":28,"carreras":["Info"],"codigo":"TI_113","materia":"Computabilidad y Complejidad","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":29,"carreras":["Info"],"codigo":"758","materia":"Construcción de Interfaces de Usuario","comision":"1","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":30,"carreras":["Info"],"codigo":"758","materia":"Construcción de Interfaces de Usuario","comision":"2","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":31,"carreras":["Info"],"codigo":"758","materia":"Construcción de Interfaces de Usuario","comision":"3","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":32,"carreras":["Ciber"],"codigo":"TI_159","materia":"Criptografía","comision":"1","raw_horario":"Lunes 18 a 22 hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":33,"carreras":["Info"],"codigo":"763","materia":"Desarrollo de Aplicaciones","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":34,"carreras":["Ciber"],"codigo":"TI_165","materia":"Desarrollo, seguridad y operaciones","comision":"1","raw_horario":"Lunes 18 a 22hs(P) - Jueves 18 a 20hs(V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Jueves","start":18,"end":20}]},{"id":35,"carreras":["VJ"],"codigo":"TI_203","materia":"Diseño de interfaces y experiencia de usuario","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":36,"carreras":["VJ"],"codigo":"Elec_VJ_12","materia":"Diseño Lúdico","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":37,"carreras":["VJ"],"codigo":"TI_021","materia":"Elementos de ingenieria de software","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":38,"carreras":["Info"],"codigo":"759","materia":"Estrategias de Persistencia","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":39,"carreras":["Info"],"codigo":"759","materia":"Estrategias de Persistencia","comision":"2","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":40,"carreras":["Info"],"codigo":"759","materia":"Estrategias de Persistencia","comision":"3","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":41,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"1","raw_horario":"Martes 9 a 13 (P) - Viernes 9 a 11 (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Martes","start":9,"end":13},{"day":"Viernes","start":9,"end":11}]},{"id":42,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"2","raw_horario":"Martes 9 a 13 (P) - Jueves 9 a 11 (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Martes","start":9,"end":13},{"day":"Jueves","start":9,"end":11}]},{"id":43,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"4","raw_horario":"Lunes 18 a 22 (P) - Viernes 18 a 20 (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Viernes","start":18,"end":20}]},{"id":44,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"5","raw_horario":"Lunes 18 a 22 (P) - Viernes 18 a 20 (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Viernes","start":18,"end":20}]},{"id":45,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"6","raw_horario":"Lunes 18 a 22 (P) - Viernes 18 a 20 (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Viernes","start":18,"end":20}]},{"id":46,"carreras":["Info"],"codigo":"752","materia":"Estructura de datos","comision":"3","raw_horario":"Lunes 14 a 18 (P) - Viernes 14 a 16 (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Lunes","start":14,"end":18},{"day":"Viernes","start":14,"end":16}]},{"id":47,"carreras":["Info"],"codigo":"TI_116","materia":"Formalizacion y generacion de lenguajes","comision":"1","raw_horario":"Jueves 8 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Jueves","start":8,"end":22}]},{"id":48,"carreras":["IA"],"codigo":"1406","materia":"Fundamentos de ciencias de datos","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":49,"carreras":["IA","Info"],"codigo":"1405","materia":"Fundamentos de Redes Neuronales","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":50,"carreras":["Info"],"codigo":"TI_105","materia":"Ingeniería de Software I","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":51,"carreras":["Info"],"codigo":"TI_105","materia":"Ingeniería de Software I","comision":"2","raw_horario":"Sábado 9 a 13hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Sábado","start":9,"end":13}]},{"id":52,"carreras":["Info"],"codigo":"TI_110","materia":"Ingeniería de Software II","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":53,"carreras":["IA"],"codigo":"1400","materia":"Introducción a la inteligencia artificial","comision":"3","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":54,"carreras":["IA"],"codigo":"1400","materia":"Introducción a la inteligencia artificial","comision":"2","raw_horario":"Lunes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Lunes","start":14,"end":18}]},{"id":55,"carreras":["IA"],"codigo":"1400","materia":"Introducción a la inteligencia artificial","comision":"1","raw_horario":"Lunes 9 a 13hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Lunes","start":9,"end":13}]},{"id":56,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"1","raw_horario":"Lunes 9 a 13hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Lunes","start":9,"end":13}]},{"id":57,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"2","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":58,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"3","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":59,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"4","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":60,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"5","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":61,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"6","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":62,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"7","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":63,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"8","raw_horario":"Lunes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Lunes","start":14,"end":18}]},{"id":64,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"9","raw_horario":"Lunes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Lunes","start":14,"end":18}]},{"id":65,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"10","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":66,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"11","raw_horario":"Miércoles 12 a 16hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":12,"end":16}]},{"id":67,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"12","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":68,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"13","raw_horario":"Lunes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Lunes","start":14,"end":18}]},{"id":69,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"14","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":70,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"15","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":71,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"16","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":72,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"17","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":73,"carreras":["Todas"],"codigo":"789","materia":"Introducción a lógica y problemas computacionales","comision":"18","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":74,"carreras":["Ciber"],"codigo":"796","materia":"Introducción a los sistemas de comunicación y seguridad","comision":"1","raw_horario":"Lunes 18 a 22hs - Sábado 10 a 12hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Sábado","start":10,"end":12}]},{"id":75,"carreras":["Ciber"],"codigo":"796","materia":"Introducción a los sistemas de comunicación y seguridad","comision":"2","raw_horario":"Viernes 8 a 12hs - Sábado 10 a 12hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":8,"end":12},{"day":"Sábado","start":10,"end":12}]},{"id":76,"carreras":["VJ"],"codigo":"743","materia":"Introducción a Motores de Videojuegos","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":77,"carreras":["Ciber","Info"],"codigo":"762","materia":"Laboratorio de sistemas operativos y redes","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":78,"carreras":["Ciber"],"codigo":"TI_020","materia":"Lenguajes informáticos","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":79,"carreras":["Ciber"],"codigo":"TI_020","materia":"Lenguajes informáticos","comision":"2","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":80,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"1","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":81,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"2","raw_horario":"Viernes 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Viernes","start":8,"end":12}]},{"id":82,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"3","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":83,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"4","raw_horario":"Lunes 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Lunes","start":14,"end":18}]},{"id":84,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"5","raw_horario":"Miércoles 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":85,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"6","raw_horario":"Miércoles 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":86,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"7","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":87,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"8","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":88,"carreras":["Info"],"codigo":"TI_007","materia":"Lenguajes informáticos I","comision":"9","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":89,"carreras":["Info"],"codigo":"TI_108","materia":"Lenguajes informáticos II","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":90,"carreras":["Info"],"codigo":"TI_111","materia":"Lenguajes Informáticos III","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":91,"carreras":["Info"],"codigo":"TI_111","materia":"Lenguajes Informáticos III","comision":"2","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":92,"carreras":["Info"],"codigo":"TI_115","materia":"Lenguajes Informáticos IV","comision":"1","raw_horario":"Viernes 18 a 22hs (P) - Sábado 8 a 11hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22},{"day":"Sábado","start":8,"end":11}]},{"id":93,"carreras":["Info"],"codigo":"772","materia":"Matemática III","comision":"1","raw_horario":"Sábado 8 a 12hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Sábado","start":8,"end":12}]},{"id":94,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"1","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":95,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"2","raw_horario":"Viernes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Viernes","start":8,"end":12}]},{"id":96,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"3","raw_horario":"Lunes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Lunes","start":8,"end":12}]},{"id":97,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"4","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":98,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"5","raw_horario":"Viernes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Viernes","start":8,"end":12}]},{"id":99,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"6","raw_horario":"Sábado 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Sábado","start":8,"end":12}]},{"id":100,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"7","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":101,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"8","raw_horario":"Miércoles 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":102,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"9","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":103,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"10","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":104,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"11","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":105,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"12","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":106,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"13","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":107,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"14","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":108,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"15","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":109,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"16","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":110,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"17","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":111,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"18","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":112,"carreras":["Todas"],"codigo":"788","materia":"Matemática para informática I","comision":"19","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":113,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"1","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":114,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"2","raw_horario":"Sábado 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Sábado","start":8,"end":12}]},{"id":115,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"3","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":116,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"4","raw_horario":"Miércoles 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":117,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"5","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":118,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"6","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":119,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"7","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":120,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"8","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":121,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"9","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":122,"carreras":["Info","Ciber","VJ"],"codigo":"793","materia":"Matemática para Informática II","comision":"10","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":123,"carreras":["Info"],"codigo":"TI_013","materia":"Matemática para Informática III","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":124,"carreras":["Info"],"codigo":"TI_017","materia":"Matemática para Informática IV","comision":"1","raw_horario":"Sábado 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Sábado","start":8,"end":12}]},{"id":125,"carreras":["Ciber"],"codigo":"797","materia":"Operaciones","comision":"1","raw_horario":"Miercoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":126,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"1","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":127,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"2","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":128,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"3","raw_horario":"Jueves 8 a 12hs","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Jueves","start":8,"end":12}]},{"id":129,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"4","raw_horario":"Miércoles 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":14,"end":18}]},{"id":130,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"5","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":131,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"6","raw_horario":"Jueves 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Jueves","start":14,"end":18}]},{"id":132,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"7","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":133,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"8","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":134,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"9","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":135,"carreras":["Ciber","Info"],"codigo":"790","materia":"Organización de computadoras I","comision":"10","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":136,"carreras":["Ciber","Info"],"codigo":"795","materia":"Organización de computadoras II","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":137,"carreras":["Ciber","Info"],"codigo":"795","materia":"Organización de computadoras II","comision":"2","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":138,"carreras":["VJ"],"codigo":"Elec_VJ_22","materia":"Planificación de Negocios","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":139,"carreras":["Info"],"codigo":"764","materia":"Práctica Profesional Supervisada","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":140,"carreras":["IA","Info"],"codigo":"774","materia":"Probabilidad y Estadística","comision":"1","raw_horario":"Martes 18 a 22hs (P) - Jueves 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22},{"day":"Jueves","start":18,"end":20}]},{"id":141,"carreras":["IA"],"codigo":"1410","materia":"Procesamiento de Imágenes y Visión por Computadora","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":142,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"1","raw_horario":"Miércoles 8 a 12hs (P)  - Sábado 10 a 12hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12},{"day":"Sábado","start":10,"end":12}]},{"id":143,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"2","raw_horario":"Martes 14 a 18hs (P)  - Sábado 10 a 12hs (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Martes","start":14,"end":18},{"day":"Sábado","start":10,"end":12}]},{"id":144,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"3","raw_horario":"Lunes 18 a 22hs (P)  - Sábado 10 a 12hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Sábado","start":10,"end":12}]},{"id":145,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"4","raw_horario":"Martes 18 a 22hs (P)  - Sábado 10 a 12hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22},{"day":"Sábado","start":10,"end":12}]},{"id":146,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"5","raw_horario":"Martes 18 a 22hs (P)  - Sábado 10 a 12hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22},{"day":"Sábado","start":10,"end":12}]},{"id":147,"carreras":["Info","VJ"],"codigo":"753","materia":"Programación de objetos I","comision":"6","raw_horario":"Miércoles 18 a 22hs (P)  - Sábado 10 a 12hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22},{"day":"Sábado","start":10,"end":12}]},{"id":148,"carreras":["Info"],"codigo":"765","materia":"Programacion de Objetos II","comision":"1","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":149,"carreras":["Info"],"codigo":"765","materia":"Programacion de Objetos II","comision":"2","raw_horario":"Jueves 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22}]},{"id":150,"carreras":["Info"],"codigo":"765","materia":"Programacion de Objetos II","comision":"3","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":151,"carreras":["Info"],"codigo":"765","materia":"Programacion de Objetos II","comision":"4","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":152,"carreras":["VJ"],"codigo":"744","materia":"Programación de Videojuegos I","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":153,"carreras":["VJ"],"codigo":"745","materia":"Programación de Videojuegos II","comision":"1","raw_horario":"Miércoles 18 a 20hs (V) - Sábado 8 a 12hs (P)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":20},{"day":"Sábado","start":8,"end":12}]},{"id":154,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"1","raw_horario":"Miércoles 8 a 12hs (P) - Martes 8 a 10hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12},{"day":"Martes","start":8,"end":10}]},{"id":155,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"2","raw_horario":"Miércoles 8 a 12hs (P) - Martes 8 a 10hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12},{"day":"Martes","start":8,"end":10}]},{"id":156,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"3","raw_horario":"Miércoles 8 a 12hs (P) - Martes 8 a 10hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":8,"end":12},{"day":"Martes","start":8,"end":10}]},{"id":157,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"4","raw_horario":"Jueves 8 a 12hs (P) - Martes 8 a 10hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Jueves","start":8,"end":12},{"day":"Martes","start":8,"end":10}]},{"id":158,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"5","raw_horario":"Jueves 8 a 12hs (P) - Martes 8 a 10hs (V)","turno":"Mañana","modalidad":"Combinada","blocks":[{"day":"Jueves","start":8,"end":12},{"day":"Martes","start":8,"end":10}]},{"id":159,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"6","raw_horario":"Miércoles 12 a 16hs (P) - Martes 14 a 16hs (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":12,"end":16},{"day":"Martes","start":14,"end":16}]},{"id":160,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"7","raw_horario":"Miércoles 14 a 18hs (P) - Martes 14 a 16hs (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":14,"end":18},{"day":"Martes","start":14,"end":16}]},{"id":161,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"8","raw_horario":"Viernes 14 a 18hs (P) -  Martes 14 a 16hs (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Viernes","start":14,"end":18},{"day":"Martes","start":14,"end":16}]},{"id":162,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"9","raw_horario":"Viernes 14 a 18hs (P) -  Martes 14 a 16hs (V)","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Viernes","start":14,"end":18},{"day":"Martes","start":14,"end":16}]},{"id":163,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"10","raw_horario":"Jueves 18 a 22hs (P) - Martes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":164,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"11","raw_horario":"Jueves 18 a 22hs (P) - Martes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Jueves","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":165,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"12","raw_horario":"Viernes 18 a 22hs (P) - Martes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":166,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"13","raw_horario":"Viernes 18 a 22hs (P) - Martes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":167,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"14","raw_horario":"Viernes 18 a 22hs (P) - Martes 18 a 20hs (V)","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":168,"carreras":["Info"],"codigo":"792","materia":"Programación Estructurada","comision":"15","raw_horario":"Martes 16 a 22hs (V)","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Martes","start":16,"end":22}]},{"id":169,"carreras":["Info"],"codigo":"TI_123","materia":"Proyecto final","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":170,"carreras":["IA"],"codigo":"1411","materia":"Proyecto integrador","comision":"1","raw_horario":"a coordinar","turno":"Noche","modalidad":"Presencial","blocks":[]},{"id":171,"carreras":["Ciber"],"codigo":"798","materia":"Redes avanzadas","comision":"1","raw_horario":"Lunes 18 a 22hs - Martes 18 a 20hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Lunes","start":18,"end":22},{"day":"Martes","start":18,"end":20}]},{"id":172,"carreras":["Ciber","Info"],"codigo":"756","materia":"Redes de computadoras","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":173,"carreras":["Ciber","Info"],"codigo":"756","materia":"Redes de computadoras","comision":"2","raw_horario":"Jueves 13 a 17hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Jueves","start":13,"end":17}]},{"id":174,"carreras":["Ciber","Info"],"codigo":"756","materia":"Redes de computadoras","comision":"3","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":175,"carreras":["Ciber","Info"],"codigo":"771","materia":"Seguridad de la Información","comision":"1","raw_horario":"Martes de 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":176,"carreras":["VJ"],"codigo":"TI_209","materia":"Simulación I","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":177,"carreras":["Info"],"codigo":"779","materia":"Sistemas Distribuidos y Tiempo Real","comision":"1","raw_horario":"Martes (18:00 a 22:00)","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":178,"carreras":["Ciber","Info"],"codigo":"757","materia":"Sistemas operativos","comision":"1","raw_horario":"Martes 18 a 22hs ","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":179,"carreras":["Ciber","Info"],"codigo":"757","materia":"Sistemas operativos","comision":"2","raw_horario":"Martes 14 a 18hs ","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":180,"carreras":["Info"],"codigo":"TI_015","materia":"Sistemas y organizaciones","comision":"1","raw_horario":"Martes 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Martes","start":8,"end":12}]},{"id":181,"carreras":["Info"],"codigo":"TI_015","materia":"Sistemas y organizaciones","comision":"2","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Presencial","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":182,"carreras":["Info"],"codigo":"TI_015","materia":"Sistemas y organizaciones","comision":"3","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":183,"carreras":["Ciber"],"codigo":"794","materia":"Taller de intérpretes de comandos","comision":"1","raw_horario":"Miercoles 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":18,"end":22}]},{"id":184,"carreras":["Ciber","IA","VJ"],"codigo":"1403","materia":"Taller de programación I","comision":"1","raw_horario":"Miércoles 8 a 12hs","turno":"Mañana","modalidad":"Presencial","blocks":[{"day":"Miércoles","start":8,"end":12}]},{"id":185,"carreras":["Ciber","IA","VJ"],"codigo":"1403","materia":"Taller de programación I","comision":"2","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":186,"carreras":["Ciber","IA","VJ"],"codigo":"1403","materia":"Taller de programación I","comision":"3","raw_horario":"Lunes  18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":187,"carreras":["Ciber","IA","VJ"],"codigo":"1403","materia":"Taller de programación I","comision":"4","raw_horario":"Viernes 18 a 22hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":188,"carreras":["Ciber","IA","VJ"],"codigo":"1403","materia":"Taller de programación I","comision":"5","raw_horario":"Martes 14 a 18hs","turno":"Tarde","modalidad":"Combinada","blocks":[{"day":"Martes","start":14,"end":18}]},{"id":189,"carreras":["IA"],"codigo":"1404","materia":"Taller de programación II","comision":"1","raw_horario":"Viernes 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Viernes","start":18,"end":22}]},{"id":190,"carreras":["IA"],"codigo":"1408","materia":"Taller de programación III","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":191,"carreras":["Todas"],"codigo":"786","materia":"Tecnología y Sociedad","comision":"1","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":192,"carreras":["Todas"],"codigo":"786","materia":"Tecnología y Sociedad","comision":"2","raw_horario":"Martes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Martes","start":18,"end":22}]},{"id":193,"carreras":["VJ"],"codigo":"TI_208","materia":"Tecnologías interactivas","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Presencial","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":194,"carreras":["Info"],"codigo":"777","materia":"Teoría de la Computación","comision":"1","raw_horario":"Lunes 18 a 22hs","turno":"Noche","modalidad":"Virtual","blocks":[{"day":"Lunes","start":18,"end":22}]},{"id":195,"carreras":["Info"],"codigo":"787","materia":"Tesina de licenciatura","comision":"1","raw_horario":"Miércoles 18 a 22hs","turno":"Noche","modalidad":"Combinada","blocks":[{"day":"Miércoles","start":18,"end":22}]}]
-</script>
-<script>
-const MATERIAS = JSON.parse(document.getElementById('materias-data').textContent);
-
-const DAYS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-const HOUR_START = 8, HOUR_END = 22;
-
-// Palette for tape colors (rotates by codigo hash)
-const PALETTE = [
-  {bg:'#FCE7B8', border:'#D9A02B', text:'#5C4310'},
-  {bg:'#C9E3F7', border:'#4C86BA', text:'#1D3A54'},
-  {bg:'#D7EBD2', border:'#5B9E68', text:'#274D2E'},
-  {bg:'#F4D4E0', border:'#C4577E', text:'#5C1F35'},
-  {bg:'#E3D6F5', border:'#8C63C4', text:'#3B2760'},
-  {bg:'#F7DCC4', border:'#C97B3D', text:'#5A3413'},
-  {bg:'#CDEAE6', border:'#3F9C90', text:'#164F49'},
-  {bg:'#F1E3B0', border:'#B99328', text:'#4E3D0D'},
-];
-function colorFor(codigo){
-  let h = 0;
-  for (const ch of codigo) h = (h*31 + ch.charCodeAt(0)) % 997;
-  return PALETTE[h % PALETTE.length];
-}
-
-// Group by materia+codigo
-const groups = {};
-for (const r of MATERIAS){
-  const key = r.codigo + '|' + r.materia;
-  if (!groups[key]) groups[key] = { codigo:r.codigo, materia:r.materia, carreras:r.carreras, comisiones:[] };
-  groups[key].comisiones.push(r);
-}
-const groupList = Object.values(groups).sort((a,b)=>a.materia.localeCompare(b.materia,'es'));
-
-// ===== State =====
-// selected: Map key(codigo|materia) -> record id chosen
-let selected = new Map();
-
-function loadFromHash(){
-  const h = location.hash.replace('#','');
-  if (!h.startsWith('ids=')) return;
-  const ids = h.slice(4).split(',').map(x=>parseInt(x,10)).filter(x=>!isNaN(x));
-  const byId = {};
-  MATERIAS.forEach(r=>byId[r.id]=r);
-  ids.forEach(id=>{
-    const rec = byId[id];
-    if (rec){
-      const key = rec.codigo + '|' + rec.materia;
-      selected.set(key, id);
-    }
-  });
-}
-function saveToHash(){
-  const ids = Array.from(selected.values());
-  history.replaceState(null, '', ids.length ? ('#ids=' + ids.join(',')) : ' ');
-}
-
-// ===== Filters =====
-let activeFilters = { carrera:null, turno:null, modalidad:null, q:'' };
-
-function uniqueSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=>a.localeCompare(b,'es')); }
-
-function buildChips(containerId, values, filterKey){
-  const el = document.getElementById(containerId);
-  el.innerHTML = '';
-  values.forEach(v=>{
-    const chip = document.createElement('div');
-    chip.className = 'tag-chip';
-    chip.textContent = v;
-    chip.onclick = () => {
-      activeFilters[filterKey] = (activeFilters[filterKey] === v) ? null : v;
-      renderChipsActive();
-      renderMateriaList();
-    };
-    el.appendChild(chip);
-  });
-}
-function renderChipsActive(){
-  document.querySelectorAll('#carreraChips .tag-chip').forEach(c=>{
-    c.classList.toggle('active', c.textContent === activeFilters.carrera);
-  });
-  document.querySelectorAll('#turnoChips .tag-chip').forEach(c=>{
-    c.classList.toggle('active', c.textContent === activeFilters.turno);
-  });
-  document.querySelectorAll('#modalidadChips .tag-chip').forEach(c=>{
-    c.classList.toggle('active', c.textContent === activeFilters.modalidad);
-  });
-}
-
-buildChips('carreraChips', uniqueSorted(MATERIAS.flatMap(r=>r.carreras)), 'carrera');
-buildChips('turnoChips', uniqueSorted(MATERIAS.map(r=>r.turno)), 'turno');
-buildChips('modalidadChips', uniqueSorted(MATERIAS.map(r=>r.modalidad)), 'modalidad');
-
-document.getElementById('searchInput').addEventListener('input', (e)=>{
-  activeFilters.q = e.target.value.trim().toLowerCase();
-  renderMateriaList();
-});
-
-// track which materia cards are expanded
-const openCards = new Set();
-
-function matchesFilters(g){
-  if (activeFilters.carrera && !g.carreras.includes(activeFilters.carrera)) return false;
-  if (activeFilters.turno && !g.comisiones.some(c=>c.turno===activeFilters.turno)) return false;
-  if (activeFilters.modalidad && !g.comisiones.some(c=>c.modalidad===activeFilters.modalidad)) return false;
-  if (activeFilters.q){
-    const hay = (g.materia + ' ' + g.codigo).toLowerCase();
-    if (!hay.includes(activeFilters.q)) return false;
-  }
-  return true;
-}
-
-function renderMateriaList(){
-  const el = document.getElementById('materiaList');
-  el.innerHTML = '';
-  const filtered = groupList.filter(matchesFilters);
-  if (!filtered.length){
-    el.innerHTML = '<div class="no-results">No hay materias que coincidan con esos filtros.</div>';
-    return;
-  }
-  filtered.forEach(g=>{
-    const key = g.codigo + '|' + g.materia;
-    const card = document.createElement('div');
-    card.className = 'materia-card' + (openCards.has(key) ? ' open' : '');
-    const selId = selected.get(key);
-
-    const head = document.createElement('div');
-    head.className = 'm-head';
-    head.innerHTML = `
-      <div>
-        <div class="m-title">${g.materia}${selId!==undefined ? ' ✓' : ''}</div>
-        <div class="m-carreras">${g.carreras.join(' · ')}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span class="m-code">${g.codigo}</span>
-        <span class="m-caret">▶</span>
-      </div>`;
-    head.onclick = () => {
-      if (openCards.has(key)) openCards.delete(key); else openCards.add(key);
-      renderMateriaList();
-    };
-    card.appendChild(head);
-
-    const comList = document.createElement('div');
-    comList.className = 'com-list';
-    g.comisiones.forEach(c=>{
-      const item = document.createElement('div');
-      const isSel = selId === c.id;
-      item.className = 'com-item' + (isSel ? ' selected':'');
-      if (isSel){
-        const col = colorFor(c.codigo);
-        item.style.setProperty('--sel-color', col.bg);
-        item.style.setProperty('--sel-color-strong', col.border);
-      }
-      const when = c.blocks.length
-        ? c.blocks.map(b=>`${b.day.slice(0,3)} ${b.start}-${b.end}`).join(' / ')
-        : 'A coordinar';
-      item.innerHTML = `
-        <div>
-          <div>Com. ${c.comision}</div>
-          <div class="com-when">${when}</div>
-        </div>
-        <div class="com-badges">
-          <span class="badge ${c.modalidad}">${c.modalidad}</span>
-        </div>`;
-      item.onclick = (ev) => {
-        ev.stopPropagation();
-        if (isSel) selected.delete(key);
-        else selected.set(key, c.id);
-        saveToHash();
-        renderAll();
-      };
-      comList.appendChild(item);
-    });
-    card.appendChild(comList);
-    el.appendChild(card);
-  });
-}
-
-// ===== Calendar rendering =====
-function byId(id){ return MATERIAS.find(r=>r.id===id); }
-
-function computeConflicts(chosen){
-  // chosen: array of records with blocks
-  const conflicts = []; // {a, b, day, overlapStart, overlapEnd}
-  for (let i=0;i<chosen.length;i++){
-    for (let j=i+1;j<chosen.length;j++){
-      const A = chosen[i], B = chosen[j];
-      for (const ba of A.blocks){
-        for (const bb of B.blocks){
-          if (ba.day === bb.day && ba.start < bb.end && bb.start < ba.end){
-            conflicts.push({a:A, b:B, day:ba.day, start:Math.max(ba.start,bb.start), end:Math.min(ba.end,bb.end)});
-          }
-        }
-      }
-    }
-  }
-  return conflicts;
-}
-
-function renderCalendar(chosen, conflicts){
-  const grid = document.getElementById('calGrid');
-  const emptyMsg = document.getElementById('emptyMsg');
-  grid.innerHTML = '';
-
-  if (!chosen.length){
-    emptyMsg.style.display = 'block';
-  } else {
-    emptyMsg.style.display = 'none';
-  }
-
-  // header row
-  const corner = document.createElement('div');
-  corner.className = 'cal-head corner';
-  grid.appendChild(corner);
-  DAYS.forEach(d=>{
-    const h = document.createElement('div');
-    h.className = 'cal-head';
-    h.textContent = d;
-    grid.appendChild(h);
-  });
-
-  const nHours = HOUR_END - HOUR_START;
-  const rowHeight = 52;
-
-  // hour label column
-  const hourCol = document.createElement('div');
-  hourCol.style.position='relative';
-  for (let hI=0; hI<nHours; hI++){
-    const lbl = document.createElement('div');
-    lbl.className = 'hour-row-bg hour-label';
-    lbl.textContent = (HOUR_START+hI) + ':00';
-    lbl.style.borderBottom = 'none';
-    hourCol.appendChild(lbl);
-  }
-  grid.appendChild(hourCol);
-
-  // day columns
-  const dayConflictSet = new Set(); // recordId set that has a conflict, keyed by "id-day-start-end"
-  conflicts.forEach(c=>{
-    dayConflictSet.add(c.a.id + '|' + c.day + '|' + c.start);
-    dayConflictSet.add(c.b.id + '|' + c.day + '|' + c.start);
-  });
-
-  DAYS.forEach(day=>{
-    const col = document.createElement('div');
-    col.className = 'day-col';
-    for (let hI=0; hI<nHours; hI++){
-      const bg = document.createElement('div');
-      bg.className = 'hour-row-bg';
-      col.appendChild(bg);
-    }
-
-    // gather all events for this day (a rec can have multiple blocks on the same day)
-    const events = [];
-    chosen.forEach(rec=>{
-      rec.blocks.filter(b=>b.day===day).forEach(b=>{
-        events.push({ rec, b });
-      });
-    });
-    events.sort((x,y)=> x.b.start - y.b.start || x.b.end - y.b.end);
-
-    // cluster events that transitively overlap, then greedily assign side-by-side columns
-    const clusters = [];
-    events.forEach(ev=>{
-      let placed = false;
-      for (const cl of clusters){
-        if (cl.some(o => ev.b.start < o.b.end && o.b.start < ev.b.end)){
-          cl.push(ev); placed = true; break;
-        }
-      }
-      if (!placed) clusters.push([ev]);
-    });
-    let changed = true;
-    while (changed){
-      changed = false;
-      outer:
-      for (let i=0;i<clusters.length;i++){
-        for (let j=i+1;j<clusters.length;j++){
-          const overlap = clusters[i].some(a=>clusters[j].some(b2=> a.b.start < b2.b.end && b2.b.start < a.b.end));
-          if (overlap){
-            clusters[i] = clusters[i].concat(clusters[j]);
-            clusters.splice(j,1);
-            changed = true;
-            break outer;
-          }
-        }
-      }
-    }
-
-    clusters.forEach(cl=>{
-      const colsEnd = [];
-      cl.sort((x,y)=> x.b.start - y.b.start);
-      cl.forEach(ev=>{
-        let colIdx = colsEnd.findIndex(endT => endT <= ev.b.start);
-        if (colIdx === -1){ colIdx = colsEnd.length; colsEnd.push(ev.b.end); }
-        else { colsEnd[colIdx] = ev.b.end; }
-        ev._col = colIdx;
-      });
-      const numCols = colsEnd.length;
-      cl.forEach(ev=>{
-        const { rec, b } = ev;
-        const col2 = colorFor(rec.codigo);
-        const top = (b.start - HOUR_START) * rowHeight;
-        const height = (b.end - b.start) * rowHeight - 4;
-        const widthPct = 100 / numCols;
-        const leftPct = ev._col * widthPct;
-        const block = document.createElement('div');
-        let isConflict = false;
-        for (const c of conflicts){
-          if (c.day===day && ((c.a.id===rec.id) || (c.b.id===rec.id)) &&
-              b.start < c.end && c.start < b.end){ isConflict = true; break; }
-        }
-        block.className = 'block' + (isConflict ? ' conflict':'');
-        block.style.top = top + 'px';
-        block.style.height = height + 'px';
-        block.style.left = `calc(${leftPct}% + 3px)`;
-        block.style.right = 'auto';
-        block.style.width = `calc(${widthPct}% - 6px)`;
-        block.style.background = col2.bg;
-        block.style.borderColor = col2.border;
-        block.style.color = col2.text;
-        block.style.transform = numCols > 1 ? 'none' : `rotate(${(rec.id % 5 - 2) * 0.4}deg)`;
-        block.innerHTML = `<span class="b-title">${rec.materia}</span><span class="b-meta">Com. ${rec.comision} · ${b.start}-${b.end}hs</span>`;
-        col.appendChild(block);
-      });
-    });
-
-    grid.appendChild(col);
-  });
-
-  grid.style.gridTemplateRows = `auto repeat(${nHours}, ${rowHeight}px)`;
-}
-
-function renderConflictNotes(conflicts){
-  const el = document.getElementById('conflictArea');
-  el.innerHTML = '';
-  if (!conflicts.length) return;
-  const box = document.createElement('div');
-  box.className = 'conflict-note';
-  const lines = conflicts.map(c=>
-    `<div>⚠️ <b>${c.a.materia}</b> (com. ${c.a.comision}) se superpone con <b>${c.b.materia}</b> (com. ${c.b.comision}) el <b>${c.day}</b> de ${c.start} a ${c.end}hs.</div>`
-  ).join('');
-  box.innerHTML = `<div style="flex:1;"><div style="margin-bottom:4px;font-weight:700;">Tenés horarios superpuestos</div>${lines}</div>`;
-  el.appendChild(box);
-}
-
-function renderLegend(chosen){
-  const el = document.getElementById('legendList');
-  el.innerHTML = '';
-  if (!chosen.length){
-    el.innerHTML = '<div class="legend-empty">Todavía no elegiste ninguna materia.</div>';
-    return;
-  }
-  chosen.sort((a,b)=>a.materia.localeCompare(b.materia,'es')).forEach(rec=>{
-    const col = colorFor(rec.codigo);
-    const when = rec.blocks.length
-      ? rec.blocks.map(b=>`${b.day} ${b.start}-${b.end}hs`).join(' · ')
-      : 'A coordinar';
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.style.background = col.bg + '55';
-    item.innerHTML = `
-      <span class="legend-swatch" style="background:${col.bg};border-color:${col.border};"></span>
-      <div class="li-main">
-        <div><b>${rec.materia}</b> · com. ${rec.comision} <span class="badge ${rec.modalidad}">${rec.modalidad}</span></div>
-        <div class="li-when">${when}</div>
-      </div>
-      <button title="Quitar">✕</button>`;
-    item.querySelector('button').onclick = () => {
-      const key = rec.codigo + '|' + rec.materia;
-      selected.delete(key);
-      saveToHash();
-      renderAll();
-    };
-    el.appendChild(item);
-  });
-}
-
-function renderSummary(chosen, conflicts){
-  document.getElementById('statMaterias').textContent = chosen.length;
-  let totalHoras = 0;
-  chosen.forEach(rec=>rec.blocks.forEach(b=>totalHoras += (b.end-b.start)));
-  document.getElementById('statHoras').textContent = totalHoras;
-  document.getElementById('statConflictos').textContent = conflicts.length;
-}
-
-function renderAll(){
-  const chosen = Array.from(selected.values()).map(byId).filter(Boolean);
-  const conflicts = computeConflicts(chosen);
-  renderCalendar(chosen, conflicts);
-  renderConflictNotes(conflicts);
-  renderLegend(chosen);
-  renderSummary(chosen, conflicts);
-  renderMateriaList();
-}
-
-document.getElementById('btnClear').onclick = () => {
-  if (!selected.size) return;
-  if (confirm('¿Vaciar todo el horario armado?')){
-    selected.clear();
-    saveToHash();
-    renderAll();
-  }
-};
-document.getElementById('btnShare').onclick = () => {
-  saveToHash();
-  navigator.clipboard.writeText(location.href).then(()=>{
-    const btn = document.getElementById('btnShare');
-    const old = btn.textContent;
-    btn.textContent = '✅ Copiado';
-    setTimeout(()=>btn.textContent = old, 1500);
-  }).catch(()=>{
-    alert('Copiá este link manualmente:\\n' + location.href);
-  });
-};
-
-loadFromHash();
-renderMateriaList();
-renderAll();
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
