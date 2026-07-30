@@ -27,8 +27,8 @@ function groupKey(r){
 
 // ===== Day/time parsing (shared by xlsx import) =====
 const DAY_NORM = {
-  'lunes':'Lunes','martes':'Martes','miercoles':'Miércoles','miércoles':'Miércoles',
-  'jueves':'Jueves','viernes':'Viernes','sabado':'Sábado','sábado':'Sábado','domingo':'Domingo'
+  'lunes':'Lunes','Lun':'Lunes', 'martes':'Martes','Mar':'Martes', 'miercoles':'Miércoles','miércoles':'Miércoles', 'Mie':'Miércoles',
+  'jueves':'Jueves','Jue':'Jueves','Viernes':'Viernes','Vie':'Viernes','Sábado':'Sábado','Sab':'Sábado','domingo':'Domingo','Dom':'Domingo'
 };
 function parseSegment(seg){
   seg = seg.trim();
